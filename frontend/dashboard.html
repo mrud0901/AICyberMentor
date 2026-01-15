@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - AI Cyber Mentor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-gray-300">
+    <div class="min-h-screen w-full flex flex-col">
+        <!-- Header -->
+        <header class="bg-slate-800 shadow-md w-full">
+            <div class="w-full px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <a href="dashboard.html" class="flex items-center space-x-2">
+                        <svg class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        <span class="text-xl font-bold text-white">AI Mentor</span>
+                    </a>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="dashboard.html" class="text-white font-semibold px-2 py-1 rounded-lg hover:bg-slate-700 transition">Dashboard</a>
+                    <a href="learninghub.html" class="text-gray-300 px-2 py-1 rounded-lg hover:bg-slate-700 transition">Learning Hub</a>
+                    <a href="chatbot.html" class="text-gray-300 px-2 py-1 rounded-lg hover:bg-slate-700 transition">Chatbot</a>
+                    <a href="databreach.html" class="text-gray-300 px-2 py-1 rounded-lg hover:bg-slate-700 transition">Data Breach Check</a>
+                    <a href="settings.html" class="text-gray-300 px-2 py-1 rounded-lg hover:bg-slate-700 transition">Settings</a>
+                </nav>
+                <span class="text-white font-semibold" id="user-name-dashboard">User Name</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto p-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8 animate-fade-in">Welcome back, <span id="dashboard-user-name"></span>!</h1>
+
+            <!-- Toolkit Section -->
+            <div class="mb-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Your Personal Security Toolkit</h2>
+                    <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">Our app is packed with features designed to give you clarity and confidence online, all in one simple interface.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Tool: AI Security Chatbot -->
+                    <div class="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm p-8 flex flex-col hover:shadow-xl transition-shadow duration-300 animate-fade-in group hover:scale-[1.03] hover:-translate-y-1 transition-transform">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center mb-4">
+                            <svg class="h-7 w-7 text-indigo-500 dark:text-purple-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                <path d="M5 6.5c0-1.38 1.12-2.5 2.5-2.5h9A2.5 2.5 0 0119 6.5v5a2.5 2.5 0 01-2.5 2.5h-3.95L10 17.5v-3.5H7.5A2.5 2.5 0 015 11.5v-5z" stroke-linejoin="round" />
+                                <path d="M8.5 8.5h7m-7 2.5h4" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2 text-gray-900 dark:text-white">AI Security Chatbot</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">Have a question? Our AI mentor gives you clear, simple answers. Learn about 2FA, phishing, and malware in plain English.</p>
+                        <a href="chatbot.html" class="font-semibold text-indigo-600 hover:underline dark:text-purple-400">Start Chatting &rarr;</a>
+                    </div>
+                    <!-- Tool: Data Breach Check (with form) -->
+                    <div class="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm p-8 flex flex-col hover:shadow-xl transition-shadow duration-300 animate-fade-in group hover:scale-[1.03] hover:-translate-y-1 transition-transform delay-100">
+                        <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-500/20 flex items-center justify-center mb-4">
+                            <svg class="h-7 w-7 text-rose-500 dark:text-rose-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                <path d="M12 3l7 3v5.5c0 4.9-3.06 9.24-7 10.5-3.94-1.26-7-5.6-7-10.5V6L12 3z" stroke-linejoin="round" />
+                                <path d="M10 12.5l1.7 1.7 3.3-3.4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2 text-gray-900 dark:text-white">Data Breach Check</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">Find out if your email or phone has been compromised. We'll tell you what to do about it, step-by-step.</p>
+                        <a href="databreach.html" class="font-semibold text-indigo-600 hover:underline dark:text-purple-400 mt-2 inline-block">Start Breach &rarr;</a>
+                    </div>
+                    <!-- Tool: Learning Hub -->
+                    <div class="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm p-8 flex flex-col hover:shadow-xl transition-shadow duration-300 animate-fade-in group hover:scale-[1.03] hover:-translate-y-1 transition-transform delay-200">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center mb-4">
+                            <svg class="h-7 w-7 text-amber-500 dark:text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                                <path d="M4 10l8-4 8 4-8 4-8-4z" stroke-linejoin="round" fill="currentColor" fill-opacity="0.1" />
+                                <path d="M6 11v4.2a4 4 0 008 0V11" stroke-linecap="round" />
+                                <path d="M18 11v5" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2 text-gray-900 dark:text-white">Interactive Learning Hub</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4 flex-grow">Boost your cybersecurity knowledge with guided lessons, quizzes, and real-world simulations.</p>
+                        <a href="learninghub.html" class="font-semibold text-indigo-600 hover:underline dark:text-purple-400">Start Learning &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News & Tips Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Latest News -->
+                <div class="lg:col-span-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm">
+                    <div class="p-6 border-b border-gray-200 dark:border-slate-700">
+                        <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Latest Cyber News</h2>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <!-- News Item 1 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-16 h-16 bg-cover bg-center rounded-md" style="background-image: url('https://images.unsplash.com/photo-1526374965328-5f61d4dc18c5?w=400')"></div>
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">November 1, 2025</p>
+                                <h3 class="font-semibold text-lg text-gray-900 dark:text-white mt-1">New 'Kryll' Ransomware Variant Spreading via Email</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">A sophisticated ransomware campaign is targeting small businesses. Experts urge caution with unsolicited email attachments.</p>
+                                <a href="#" class="text-sm font-semibold text-indigo-600 hover:underline dark:text-purple-400 mt-2 inline-block">Read More</a>
+                            </div>
+                        </div>
+                         <hr class="border-gray-200 dark:border-slate-700">
+                        <!-- News Item 2 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-16 h-16 bg-cover bg-center rounded-md" style="background-image: url('https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400')"></div>
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">October 30, 2025</p>
+                                <h3 class="font-semibold text-lg text-gray-900 dark:text-white mt-1">Global Tech Firms Announce New Open-Source Security Standard</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">A coalition of tech giants has released a new framework to help developers build more secure applications from the ground up.</p>
+                                <a href="#" class="text-sm font-semibold text-indigo-600 hover:underline dark:text-purple-400 mt-2 inline-block">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Tips -->
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">Security Tips of the Day</h2>
+                    <!-- Tip 1 -->
+                    <div class="bg-indigo-50 dark:bg-purple-900/30 border-l-4 border-indigo-500 dark:border-purple-500 p-4 rounded-r-lg">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-lightbulb text-indigo-500 dark:text-purple-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-semibold text-gray-800 dark:text-white">Use a Password Manager</h3>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">Instead of memorizing dozens of passwords, use a password manager to store them securely. This allows you to use long, complex, and unique passwords for every site.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tip 2 -->
+                    <div class="bg-teal-50 dark:bg-cyan-900/30 border-l-4 border-teal-500 dark:border-cyan-500 p-4 rounded-r-lg">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-shield-check text-teal-500 dark:text-cyan-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-semibold text-gray-800 dark:text-white">Enable Two-Factor Authentication (2FA)</h3>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">Add an extra layer of security to your accounts. Even if someone steals your password, they won't be able to log in without the second factor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+        <script src="breach-check.js"></script>
+        <style>
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeInUp 0.8s cubic-bezier(.4,0,.2,1) both;
+        }
+        </style>
+    <script>
+        // Mobile nav toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const mainNav = document.getElementById('main-nav');
+            const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+            if (mobileNavToggle && mainNav && mobileNavOverlay) {
+                mobileNavToggle.addEventListener('click', () => {
+                    mainNav.classList.remove('hidden');
+                    mainNav.classList.add('flex');
+                    mainNav.classList.add('translate-x-0');
+                    mobileNavOverlay.classList.remove('hidden');
+                });
+                mobileNavOverlay.addEventListener('click', () => {
+                    mainNav.classList.add('-translate-x-full');
+                    setTimeout(() => {
+                        mainNav.classList.remove('flex');
+                        mainNav.classList.add('hidden');
+                        mobileNavOverlay.classList.add('hidden');
+                    }, 300);
+                });
+            }
+        });
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            const html = document.documentElement;
+
+            function updateThemeIcons() {
+                if (html.classList.contains('dark')) {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            }
+
+            updateThemeIcons();
+
+            themeToggle.addEventListener('click', () => {
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                updateThemeIcons();
+            });
+
+            // User menu functionality
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+            const userName = document.getElementById('user-name');
+            const logoutButton = document.getElementById('logout-button');
+
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+
+            // Check authentication
+            const token = localStorage.getItem('authToken');
+            const cachedName = localStorage.getItem('userName');
+
+            if (!token) {
+                window.location.href = 'login.html';
+            } else {
+                fetch('http://localhost:4000/api/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                    .then(async (response) => {
+                        if (!response.ok) {
+                            throw new Error('Session expired.');
+                        }
+                        const data = await response.json();
+                        const name = data?.user?.fullName || cachedName || 'User';
+                        localStorage.setItem('userName', name);
+                        userName.textContent = name;
+                        const dashboardUserName = document.getElementById('dashboard-user-name');
+                        if (dashboardUserName) dashboardUserName.textContent = name;
+                    })
+                    .catch(() => {
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('userName');
+                        window.location.href = 'login.html';
+                    });
+            }
+
+            // Logout functionality
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>

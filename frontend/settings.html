@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - AI Mentor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Set theme on initial load
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        tailwind.config = { darkMode: 'class' };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .form-input {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db; /* gray-300 */
+            padding: 0.75rem 1rem;
+            background-color: #fff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1; /* indigo-500 */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .dark .form-input {
+            background-color: #1e293b; /* slate-800 */
+            border-color: #475569; /* slate-600 */
+            color: #f8fafc; /* slate-50 */
+        }
+        .dark .form-input:focus {
+            border-color: #818cf8; /* indigo-400 */
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+        }
+        .btn {
+            padding: 0.65rem 1.4rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-primary {
+            background-color: #6366f1; /* indigo-500 */
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #4f46e5; /* indigo-600 */
+            transform: translateY(-1px);
+        }
+        .settings-nav-item .fa-fw {
+            width: 1.25em;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-gray-300">
+    <div class="min-h-screen w-full flex flex-col">
+        <!-- Header -->
+        <header class="bg-slate-800 shadow-md w-full">
+            <div class="w-full px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <a href="dashboard.html" class="flex items-center space-x-2">
+                        <svg class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        <span class="text-xl font-bold text-white">AI Mentor</span>
+                    </a>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="dashboard.html" class="text-white font-semibold px-2 py-1 rounded-lg hover:bg-slate-700 transition">Dashboard</a>
+                    <a href="learninghub.html" class="text-gray-300 px-2 py-1 rounded-lg hover:bg-slate-700 transition">Learning Hub</a>
+                    <a href="chatbot.html" class="text-gray-300 px-2 py-1 rounded-lg hover:bg-slate-700 transition">Chatbot</a>
+                    <a href="databreach.html" class="text-gray-300 px-2 py-1 rounded-lg hover:bg-slate-700 transition">Data Breach Check</a>
+                    <a href="settings.html" class="text-gray-300 px-2 py-1 rounded-lg hover:bg-slate-700 transition">Settings</a>
+                </nav>
+                <span class="text-white font-semibold">Bhumika Gurjar</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-50 dark:bg-slate-900 py-12">
+            <div class="container mx-auto px-6">
+                <header class="mb-10">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Manage your account preferences and application settings.</p>
+                </header>
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-10">
+                    <!-- Sidebar Navigation -->
+                    <aside class="lg:col-span-1">
+                        <nav class="space-y-1" id="settings-nav">
+                            <button type="button" data-panel="password" class="settings-nav-item w-full flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-lg">
+                                <i class="fas fa-lock fa-fw text-gray-500 dark:text-gray-400"></i>
+                                <span>Password</span>
+                            </button>
+                            <button type="button" data-panel="team" class="settings-nav-item w-full flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-lg">
+                                <i class="fas fa-users fa-fw text-gray-500 dark:text-gray-400"></i>
+                                <span>Team</span>
+                            </button>
+                            <button type="button" data-panel="plans" class="settings-nav-item w-full flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-lg">
+                                <i class="fas fa-layer-group fa-fw text-gray-500 dark:text-gray-400"></i>
+                                <span>Plans</span>
+                            </button>
+                            <button type="button" data-panel="billing" class="settings-nav-item w-full flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-lg">
+                                <i class="fas fa-credit-card fa-fw text-gray-500 dark:text-gray-400"></i>
+                                <span>Billing</span>
+                            </button>
+                            <button type="button" data-panel="notifications" class="settings-nav-item w-full flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-lg">
+                                <i class="fas fa-bell fa-fw text-gray-500 dark:text-gray-400"></i>
+                                <span>Notifications</span>
+                            </button>
+                        </nav>
+                    </aside>
+
+                    <!-- Content Panels -->
+                    <section class="lg:col-span-3 space-y-10" id="settings-panels">
+                        <div data-panel-content="password" class="hidden bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm">
+                            <div class="px-6 py-5 border-b border-gray-200 dark:border-slate-700">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Password</h2>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Update your login credentials to keep your account secure.</p>
+                            </div>
+                            <form class="p-6 space-y-6" id="password-form">
+                                <div>
+                                    <label for="current-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current password</label>
+                                    <input type="password" id="current-password" class="form-input" required>
+                                </div>
+                                <div>
+                                    <label for="new-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New password</label>
+                                    <input type="password" id="new-password" class="form-input" required>
+                                </div>
+                                <div>
+                                    <label for="confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm new password</label>
+                                    <input type="password" id="confirm-password" class="form-input" required>
+                                </div>
+                                <div class="flex justify-end border-t border-gray-200 dark:border-slate-700 pt-6 mt-2">
+                                    <button type="submit" class="btn btn-primary">Update password</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div data-panel-content="team" class="hidden bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm">
+                            <div class="px-6 py-5 border-b border-gray-200 dark:border-slate-700">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Team</h2>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Manage team membership and roles.</p>
+                            </div>
+                            <div class="p-6 text-sm text-gray-600 dark:text-gray-300">
+                                <p>Team management features are coming soon. You'll be able to invite teammates, assign permissions, and collaborate on projects.</p>
+                            </div>
+                        </div>
+
+                        <div data-panel-content="plans" class="hidden bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm">
+                            <div class="px-6 py-5 border-b border-gray-200 dark:border-slate-700">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Plans</h2>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Compare usage limits and pricing tiers.</p>
+                            </div>
+                            <div class="p-6 text-sm text-gray-600 dark:text-gray-300">
+                                <p>Plan comparison and subscription management will be available here shortly.</p>
+                            </div>
+                        </div>
+
+                        <div data-panel-content="billing" class="hidden bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm">
+                            <div class="px-6 py-5 border-b border-gray-200 dark:border-slate-700">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Billing</h2>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Review invoices and payment methods.</p>
+                            </div>
+                            <div class="p-6 text-sm text-gray-600 dark:text-gray-300">
+                                <p>Billing settings are coming soon. You will be able to update payment information, download invoices, and manage receipts.</p>
+                            </div>
+                        </div>
+
+                        <div data-panel-content="notifications" class="hidden bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm">
+                            <div class="px-6 py-5 border-b border-gray-200 dark:border-slate-700">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Notifications</h2>
+                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Control when and how we contact you.</p>
+                            </div>
+                            <div class="p-6 space-y-5">
+                                <label class="flex items-start space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-slate-600 rounded" checked>
+                                    <span>
+                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">Product updates</span>
+                                        <span class="block text-sm text-gray-500 dark:text-gray-400">Stay informed about new features and improvements.</span>
+                                    </span>
+                                </label>
+                                <label class="flex items-start space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-slate-600 rounded">
+                                    <span>
+                                        <span class="block text-sm font-medium text-gray-900 dark:text-white">Security alerts</span>
+                                        <span class="block text-sm text-gray-500 dark:text-gray-400">Receive alerts for unusual account activity.</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mobile nav toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const mainNav = document.getElementById('main-nav');
+            const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+            if (mobileNavToggle && mainNav && mobileNavOverlay) {
+                mobileNavToggle.addEventListener('click', () => {
+                    mainNav.classList.remove('hidden');
+                    mainNav.classList.add('flex');
+                    mainNav.classList.add('translate-x-0');
+                    mobileNavOverlay.classList.remove('hidden');
+                });
+                mobileNavOverlay.addEventListener('click', () => {
+                    mainNav.classList.add('-translate-x-full');
+                    setTimeout(() => {
+                        mainNav.classList.remove('flex');
+                        mainNav.classList.add('hidden');
+                        mobileNavOverlay.classList.add('hidden');
+                    }, 300);
+                });
+            }
+        });
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            const html = document.documentElement;
+
+            function updateThemeIcons() {
+                if (html.classList.contains('dark')) {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            }
+
+            updateThemeIcons();
+
+            themeToggle.addEventListener('click', () => {
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                updateThemeIcons();
+            });
+
+            // User menu functionality
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+            const userName = document.getElementById('user-name');
+            const logoutButton = document.getElementById('logout-button');
+
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+
+            // Check authentication
+            const token = localStorage.getItem('authToken');
+            const cachedName = localStorage.getItem('userName');
+
+            if (!token) {
+                window.location.href = 'login.html';
+            } else {
+                fetch('http://localhost:4000/api/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                    .then(async (response) => {
+                        if (!response.ok) {
+                            throw new Error('Session expired.');
+                        }
+                        const data = await response.json();
+                        const name = data?.user?.fullName || cachedName || 'User';
+                        localStorage.setItem('userName', name);
+                        userName.textContent = name;
+                    })
+                    .catch(() => {
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('userName');
+                        window.location.href = 'login.html';
+                    });
+            }
+
+            // Logout functionality
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>

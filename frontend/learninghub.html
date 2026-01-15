@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Hub | AI Cybersecurity Mentor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass {
+            background: rgba(30, 27, 75, 0.7);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-200 min-h-screen">
+    <!-- Header -->
+    <header class="bg-slate-900/80 shadow-sm sticky top-0 z-50 backdrop-blur-md w-full">
+        <nav class="w-full px-6 py-5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <svg class="h-8 w-8 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.623 0-1.314-.21-2.57-.598-3.75" />
+                </svg>
+                <span class="text-2xl font-bold text-white">AI Mentor</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="index.html" class="text-gray-300 font-medium hover:text-white transition">Home</a>
+                <a href="learninghub.html" class="text-purple-400 font-semibold">Learning Hub</a>
+                <a href="chatbot.html" class="text-gray-300 font-medium hover:text-white transition">Chatbot</a>
+                <a href="databreach.html" class="text-gray-300 font-medium hover:text-white transition">Breach Check</a>
+            </div>
+            <a href="profile.html" class="bg-purple-600 text-white px-5 py-2 rounded-md font-medium hover:bg-purple-700 shadow-sm transition">My Account</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-10">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-3">Learning Hub</h1>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">Explore interactive cybersecurity lessons, test your knowledge with quizzes, and play security games to sharpen your skills. Your journey to becoming cyber smart starts here!</p>
+        </div>
+        <div x-data="{ tab: 'read' }" class="max-w-5xl mx-auto">
+            <div class="flex justify-center mb-8 space-x-4">
+                <button :class="tab === 'read' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-gray-300'" class="px-6 py-2 rounded-lg font-semibold transition" @click="tab = 'read'">Read</button>
+                <button :class="tab === 'quiz' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-gray-300'" class="px-6 py-2 rounded-lg font-semibold transition" @click="tab = 'quiz'">Quizzes</button>
+                <button :class="tab === 'game' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-gray-300'" class="px-6 py-2 rounded-lg font-semibold transition" @click="tab = 'game'">Games</button>
+            </div>
+            <!-- Read Tab -->
+            <div x-show="tab === 'read'" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Example module card (dynamic) -->
+                <!-- More module cards will be loaded here dynamically -->
+                <!-- Recommended Reading Section -->
+                <div class="glass p-6 flex flex-col justify-between col-span-1 md:col-span-2">
+                    <h2 class="text-xl font-bold mb-2 text-yellow-300 flex items-center"><svg class="h-6 w-6 mr-2 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422A12.083 12.083 0 0121 19.5c0 1.104-.896 2-2 2H5a2 2 0 01-2-2c0-3.866 3.582-7 8-7z"/></svg>Recommended Reading</h2>
+                    <ul class="list-disc pl-6 text-purple-200">
+                        <li><a href="https://www.geeksforgeeks.org/cyber-security/" target="_blank" class="underline hover:text-purple-400">GeeksforGeeks: What is Cyber Security?</a></li>
+                        <li><a href="https://www.cisco.com/c/en/us/products/security/what-is-cybersecurity.html" target="_blank" class="underline hover:text-purple-400">Cisco: What Is Cybersecurity?</a></li>
+                        <li><a href="https://www.kaspersky.com/resource-center/definitions/what-is-cyber-security" target="_blank" class="underline hover:text-purple-400">Kaspersky: What is Cyber Security?</a></li>
+                        <li><a href="https://www.ibm.com/topics/cybersecurity" target="_blank" class="underline hover:text-purple-400">IBM: Cybersecurity Topics</a></li>
+                        <li><a href="https://www.cyber.gov.au/acsc/view-all-content/guidance-materials/what-cyber-security" target="_blank" class="underline hover:text-purple-400">Australian Cyber Security Centre: What is Cyber Security?</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Quiz Tab -->
+            <div x-show="tab === 'quiz'" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass p-6 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Phishing Quiz</h2>
+                        <p class="text-gray-300 mb-4">Test your ability to spot phishing attempts with real-world examples.</p>
+                    </div>
+                    <a href="#" class="mt-4 inline-block bg-rose-600 text-white px-5 py-2 rounded-md font-semibold hover:bg-rose-700 transition">Take Quiz</a>
+                </div>
+                <!-- More quizzes can be added here -->
+            </div>
+            <!-- Game Tab -->
+            <div x-show="tab === 'game'" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass p-6 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Phishing Spotter Game</h2>
+                        <p class="text-gray-300 mb-4">Play an interactive game to practice identifying suspicious emails in a safe environment.</p>
+                    </div>
+                    <a href="#" class="mt-4 inline-block bg-green-600 text-white px-5 py-2 rounded-md font-semibold hover:bg-green-700 transition">Play Game</a>
+                </div>
+                <!-- More games can be added here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-gray-400 py-10 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-sm">&copy; 2025 AI Cybersecurity Mentor. All rights reserved.</p>
+        </div>
+    </footer>
+</footer>
+<script src="learninghub.js"></script>
+</body>
+</html>

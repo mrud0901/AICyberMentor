@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Security Chatbot - AI Mentor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        #chat-box {
+            height: calc(100vh - 350px);
+            min-height: 400px;
+        }
+        
+        /* Scrollbar styling */
+        #chat-box::-webkit-scrollbar,
+        #history-sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chat-box::-webkit-scrollbar-track,
+        #history-sidebar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .dark #chat-box::-webkit-scrollbar-track,
+        .dark #history-sidebar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        #chat-box::-webkit-scrollbar-thumb,
+        #history-sidebar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        #chat-box::-webkit-scrollbar-thumb:hover,
+        #history-sidebar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        /* Typing indicator animation */
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+        .typing-dot {
+            animation: typing 1.4s infinite;
+        }
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Sidebar transitions */
+        #history-sidebar {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(0); /* Visible by default on desktop */
+        }
+        
+        @media (max-width: 768px) {
+            #history-sidebar {
+                transform: translateX(-100%);
+            }
+            #history-sidebar.open {
+                transform: translateX(0);
+            }
+        }
+
+        /* Chat history item hover effect */
+        .chat-history-item {
+            transition: all 0.2s ease;
+        }
+        .chat-history-item:hover {
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-gray-300">
+
+    <div class="min-h-screen w-full flex flex-col">
+        <!-- Header -->
+        <header class="bg-white dark:bg-slate-800 shadow-md w-full">
+            <div class="w-full px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <a href="dashboard.html" class="flex items-center space-x-2">
+                        <svg class="h-8 w-8 text-indigo-600 dark:text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">AI Mentor</span>
+                    </a>
+                </div>
+                <!-- Mobile Hamburger -->
+                <button id="mobile-nav-toggle" class="md:hidden text-2xl text-gray-700 dark:text-gray-200 focus:outline-none ml-2">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav class="hidden md:flex items-center space-x-4">
+                    <a href="dashboard.html" class="px-3 py-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg">Dashboard</a>
+                    <a href="learninghub.html" class="px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg">Learning Hub</a>
+                    <a href="chatbot.html" class="px-3 py-2 text-gray-700 dark:text-white bg-gray-100 dark:bg-slate-700 rounded-lg">Chatbot</a>
+                    <a href="databreach.html" class="px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg">Data Breach Check</a>
+                    <a href="settings.html" class="px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg">Settings</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg p-2">
+                        <i class="fas fa-sun" id="theme-icon-sun"></i>
+                        <i class="fas fa-moon hidden" id="theme-icon-moon"></i>
+                    </button>
+                    <div class="relative">
+                        <button id="user-menu-button" class="flex items-center space-x-2">
+                            <span id="user-name" class="font-semibold text-gray-700 dark:text-gray-300"></span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-md shadow-lg py-1 hidden">
+                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700">Profile</a>
+                            <button id="logout-button" class="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile nav overlay -->
+            <div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-40 z-40 hidden md:hidden"></div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 w-full px-0 md:px-6 py-4 md:py-8 flex flex-col md:flex-row gap-0 md:gap-6">
+                <!-- Sidebar Toggle Button (Mobile) -->
+                <button id="sidebar-toggle" class="md:hidden fixed bottom-6 left-6 z-50 bg-indigo-600 dark:bg-purple-600 text-white rounded-full p-4 shadow-lg hover:bg-indigo-700 dark:hover:bg-purple-700 transition-all">
+                    <i class="fas fa-history"></i>
+                </button>
+
+                <!-- History Sidebar -->
+                <aside id="history-sidebar" class="w-11/12 max-w-xs md:w-80 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm flex flex-col overflow-hidden fixed md:relative z-40 h-[calc(100vh-180px)] md:h-auto left-0 top-20 md:top-0">
+                    <!-- Sidebar Header -->
+                    <div class="p-4 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-history text-indigo-600 dark:text-purple-400"></i>
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">Chat History</h2>
+                            </div>
+                            <button id="sidebar-close" class="md:hidden text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                            <span id="history-count">0</span> conversations
+                        </p>
+                    </div>
+
+                    <!-- New Chat Button -->
+                    <div class="p-3 border-b border-gray-200 dark:border-slate-700">
+                        <button id="new-chat-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 dark:bg-purple-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-purple-700 transition-all duration-300 shadow-sm font-medium">
+                            <i class="fas fa-plus"></i>
+                            <span>New Chat</span>
+                        </button>
+                    </div>
+
+                    <!-- History List -->
+                    <div id="history-list" class="flex-1 overflow-y-auto p-3 space-y-2">
+                        <!-- History items will be loaded here -->
+                        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                            <i class="fas fa-comments text-4xl mb-3 opacity-50"></i>
+                            <p class="text-sm">No chat history yet</p>
+                            <p class="text-xs mt-1">Start a conversation to see it here</p>
+                        </div>
+                    </div>
+
+                    <!-- Clear All Button -->
+                    <div class="p-3 border-t border-gray-200 dark:border-slate-700">
+                        <button onclick="clearAllHistory()" id="clear-all-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-300 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-trash-alt"></i>
+                            <span>Clear All History</span>
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- Main Chat Area -->
+                <div class="flex-1 w-full">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">AI Security Chatbot</h1>
+                                <span id="current-chat-badge" class="hidden px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-medium rounded-full">
+                                    <i class="fas fa-circle text-xs"></i>
+                                    <span>Active</span>
+                                </span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mt-1">Have a question? Our AI mentor gives you clear, simple answers about cybersecurity.</p>
+                        </div>
+                        <button onclick="clearCurrentChat()" id="clear-current-btn" class="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-all duration-300 shadow-sm">
+                            <i class="fas fa-broom"></i>
+                            <span class="hidden lg:inline">Clear Chat</span>
+                        </button>
+                    </div>
+
+                <!-- Chat Container -->
+                    <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm flex flex-col overflow-hidden w-full">
+                        <!-- Chat Messages Area -->
+                        <div id="chat-box" class="p-4 sm:p-6 overflow-y-auto bg-gray-50 dark:bg-slate-900/50 min-h-[300px]">
+                            <!-- Welcome message -->
+                            <div class="flex items-start gap-3 mb-6">
+                                <div class="w-10 h-10 bg-indigo-600 dark:bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <span class="text-xs font-bold text-white">AI</span>
+                                </div>
+                                <div class="bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 p-4 rounded-2xl rounded-tl-none shadow border border-gray-200 dark:border-slate-700 max-w-2xl">
+                                    <p class="leading-relaxed">👋 Hello! I'm your AI Security Mentor. I'm here to help you understand cybersecurity and stay safe online.</p>
+                                    <p class="mt-3 leading-relaxed">You can ask me about:</p>
+                                    <ul class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                        <li>• Two-factor authentication (2FA)</li>
+                                        <li>• Phishing attacks and how to spot them</li>
+                                        <li>• Password security best practices</li>
+                                        <li>• Malware and ransomware protection</li>
+                                        <li>• And much more!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Input Area -->
+                        <div class="p-3 sm:p-5 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700">
+                            <form id="chat-form" class="flex items-center gap-3">
+                                <input 
+                                    type="text" 
+                                    id="user-input" 
+                                    class="flex-1 bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-slate-600 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-purple-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500" 
+                                    placeholder="Ask me anything about cybersecurity..."
+                                    autocomplete="off"
+                                >
+                                <button 
+                                    type="submit" 
+                                    class="bg-indigo-600 dark:bg-purple-600 text-white rounded-lg px-5 py-3 hover:bg-indigo-700 dark:hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-purple-500 transition-all duration-300 shadow hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                                    id="send-button"
+                                >
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
+                                <i class="fas fa-shield-alt text-indigo-600 dark:text-purple-500"></i> Powered by Google Gemini AI • Your conversations are private
+                            </p>
+                        </div>
+                    </div>
+
+                            <!-- Quick Actions -->
+                    <div class="mt-4 md:mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 text-gray-800 dark:text-gray-200 p-4 rounded-lg transition-all duration-300 text-left shadow-sm" onclick="document.getElementById('user-input').value='What is two-factor authentication?'; document.getElementById('chat-form').dispatchEvent(new Event('submit'));">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-indigo-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-key text-indigo-600 dark:text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white">What is 2FA?</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Learn about two-factor authentication</p>
+                                </div>
+                            </div>
+                        </button>
+
+                        <button class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 text-gray-800 dark:text-gray-200 p-4 rounded-lg transition-all duration-300 text-left shadow-sm" onclick="document.getElementById('user-input').value='How can I spot phishing emails?'; document.getElementById('chat-form').dispatchEvent(new Event('submit'));">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-indigo-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-envelope text-indigo-600 dark:text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white">Spot Phishing</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Identify malicious emails</p>
+                                </div>
+                            </div>
+                        </button>
+
+                        <button class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 text-gray-800 dark:text-gray-200 p-4 rounded-lg transition-all duration-300 text-left shadow-sm" onclick="document.getElementById('user-input').value='What makes a strong password?'; document.getElementById('chat-form').dispatchEvent(new Event('submit'));">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-indigo-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-lock text-indigo-600 dark:text-purple-400"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white">Strong Passwords</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Create secure passwords</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="chatbot.js"></script>
+    <script>
+        // Mobile nav toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const mainNav = document.getElementById('main-nav');
+            const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+            if (mobileNavToggle && mainNav && mobileNavOverlay) {
+                mobileNavToggle.addEventListener('click', () => {
+                    mainNav.classList.remove('hidden');
+                    mainNav.classList.add('flex');
+                    mainNav.classList.add('translate-x-0');
+                    mobileNavOverlay.classList.remove('hidden');
+                });
+                mobileNavOverlay.addEventListener('click', () => {
+                    mainNav.classList.add('-translate-x-full');
+                    setTimeout(() => {
+                        mainNav.classList.remove('flex');
+                        mainNav.classList.add('hidden');
+                        mobileNavOverlay.classList.add('hidden');
+                    }, 300);
+                });
+            }
+        });
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            const html = document.documentElement;
+
+            function updateThemeIcons() {
+                if (html.classList.contains('dark')) {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            }
+
+            updateThemeIcons();
+
+            themeToggle.addEventListener('click', () => {
+                if (html.classList.contains('dark')) {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                updateThemeIcons();
+            });
+
+            // User menu functionality
+            const userMenuButton = document.getElementById('user-menu-button');
+            const userMenu = document.getElementById('user-menu');
+            const userName = document.getElementById('user-name');
+            const logoutButton = document.getElementById('logout-button');
+
+            userMenuButton.addEventListener('click', () => {
+                userMenu.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+
+            // Check authentication
+            const token = localStorage.getItem('authToken');
+            const cachedName = localStorage.getItem('userName');
+
+            if (!token) {
+                window.location.href = 'login.html';
+            } else {
+                fetch('http://localhost:4000/api/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                    .then(async (response) => {
+                        if (!response.ok) {
+                            throw new Error('Session expired.');
+                        }
+                        const data = await response.json();
+                        const name = data?.user?.fullName || cachedName || 'User';
+                        localStorage.setItem('userName', name);
+                        userName.textContent = name;
+                    })
+                    .catch(() => {
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('userName');
+                        window.location.href = 'login.html';
+                    });
+            }
+
+            // Logout functionality
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>

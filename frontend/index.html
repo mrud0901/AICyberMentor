@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cybersecurity Mentor - Stay Safe Online</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Google Font 'Inter' -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Alpine.js for mobile menu toggle -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Dark theme hero gradient */
+        .hero-gradient {
+            background: #111827; /* bg-gray-900 */
+            background: linear-gradient(160deg, #1e1b4b 0%, #111827 40%);
+        }
+        
+        /* Custom styles for FAQ accordion */
+        [x-cloak] { display: none !important; }
+
+        /* Pulsing glow for SVG */
+        @keyframes pulse-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.4));
+            }
+            50% {
+                filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.8));
+            }
+        }
+        .svg-glow {
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-200 antialiased">
+
+    <!-- Header -->
+    <header class="bg-slate-900/80 shadow-sm sticky top-0 z-50 backdrop-blur-md" x-data="{ mobileMenuOpen: false }">
+        <nav class="w-full px-6 py-5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <!-- Logo -->
+                <svg class="h-8 w-8 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.623 0-1.314-.21-2.57-.598-3.75" />
+                </svg>
+                <span class="text-2xl font-bold text-white">AI Mentor</span>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#features" class="text-gray-300 font-medium hover:text-white transition-all duration-300">Features</a>
+                <a href="#why-us" class="text-gray-300 font-medium hover:text-white transition-all duration-300">Why Us</a>
+                <a href="#pricing" class="text-gray-300 font-medium hover:text-white transition-all duration-300">Pricing</a>
+                <a href="#news" class="text-gray-300 font-medium hover:text-white transition-all duration-300">News</a>
+                <a href="#faq" class="text-gray-300 font-medium hover:text-white transition-all duration-300">FAQ</a>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="hidden md:flex items-center space-x-4" id="auth-links">
+                <a href="login.html" data-auth-link="login" class="text-gray-300 font-medium hover:text-white transition-all duration-300">
+                    Log In
+                </a>
+                <a href="signup.html" data-auth-link="signup" class="bg-purple-600 text-white px-5 py-2 rounded-md font-medium hover:bg-purple-700 shadow-sm hover:shadow-md transition-all duration-300">
+                    Get Started
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center" id="auth-user" hidden>
+                <a id="account-link" href="profile.html" class="bg-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-700 transition-all duration-300">
+                    My Account
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-gray-300 hover:text-white">
+                    <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Panel -->
+        <div x-show="mobileMenuOpen"
+             x-cloak
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="md:hidden absolute top-full left-0 w-full bg-slate-800 shadow-lg z-40 border-t border-slate-700"
+             @click.away="mobileMenuOpen = false">
+            <div class="flex flex-col space-y-1 p-4">
+                <a href="#features" @click="mobileMenuOpen = false" class="block px-4 py-3 text-lg font-medium text-gray-200 hover:bg-slate-700 hover:text-white rounded-md">Features</a>
+                <a href="#why-us" @click="mobileMenuOpen = false" class="block px-4 py-3 text-lg font-medium text-gray-200 hover:bg-slate-700 hover:text-white rounded-md">Why Us</a>
+                <a href="#pricing" @click="mobileMenuOpen = false" class="block px-4 py-3 text-lg font-medium text-gray-200 hover:bg-slate-700 hover:text-white rounded-md">Pricing</a>
+                <a href="#news" @click="mobileMenuOpen = false" class="block px-4 py-3 text-lg font-medium text-gray-200 hover:bg-slate-700 hover:text-white rounded-md">News</a>
+                <a href="#faq" @click="mobileMenuOpen = false" class="block px-4 py-3 text-lg font-medium text-gray-200 hover:bg-slate-700 hover:text-white rounded-md">FAQ</a>
+                <a href="signup.html" data-auth-link="signup" class="block w-full text-center bg-purple-600 text-white mt-4 px-5 py-3 rounded-md font-medium hover:bg-purple-700 transition-all duration-300">
+                    Get Started
+                </a>
+                <a href="login.html" data-auth-link="login" class="block w-full text-center text-gray-300 mt-2 px-5 py-3 rounded-md font-medium hover:bg-slate-700 transition-all duration-300">
+                    Log In
+                </a>
+                <a id="mobile-account-link" href="profile.html" class="hidden w-full text-center bg-purple-600 text-white mt-4 px-5 py-3 rounded-md font-medium hover:bg-purple-700 transition-all duration-300">
+                    My Account
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="hero-gradient">
+        <section class="container mx-auto px-6 pt-24 pb-16 md:pt-32 md:pb-24">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <!-- Left Content -->
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 animate__animated animate__fadeInDown">
+                        Your Personal AI
+                        Cybersecurity Mentor
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-300 max-w-xl mx-auto md:mx-0 mb-10 animate__animated animate__fadeInUp" style="animation-delay: 0.5s;">
+                        Stop guessing about your online safety. Our AI-powered app teaches you how to stay secure, checks for data breaches, and gives you a personal risk score.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start animate__animated animate__fadeInUp" style="animation-delay: 1s;">
+                        <a href="signup.html" class="inline-block bg-purple-600 text-white px-8 py-4 rounded-md font-semibold text-lg shadow-md hover:shadow-lg hover:bg-purple-700 transition-all duration-300">
+                            Get Started For Free
+                        </a>
+                        <a href="#how-it-works" class="inline-block bg-transparent text-gray-300 border border-gray-500 px-8 py-4 rounded-md font-semibold text-lg hover:bg-slate-800 hover:border-gray-400 transition-all duration-300">
+                            How It Works
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Content (3D Animation) -->
+                <div class="md:w-1/2">
+                    <div id="3d-container" class="relative h-80 md:h-96">
+                        <!-- This div will contain the 3D animation -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Trust Section -->
+    <section class="py-16 bg-slate-900 fade-in-section">
+        <div class="container mx-auto px-6">
+            <p class="text-center text-sm font-semibold text-gray-400 uppercase tracking-wider animate__animated" data-animation="animate__fadeInUp">
+                Trusted by security teams at
+            </p>
+            <div class="flex flex-wrap items-center justify-around mt-8 opacity-40 grayscale">
+                <img src="https://placehold.co/150x50/f0f0f0/a0a0a0?text=TechCorp" alt="TechCorp Logo" class="h-10 my-4 mx-6 animate__animated" data-animation="animate__fadeInUp" data-delay="100">
+                <img src="https://placehold.co/150x50/f0f0f0/a0a0a0?text=SecureNet" alt="SecureNet Logo" class="h-10 my-4 mx-6 animate__animated" data-animation="animate__fadeInUp" data-delay="200">
+                <img src="https://placehold.co/150x50/f0f0f0/a0a0a0?text=DigitalSafe" alt="DigitalSafe Logo" class="h-10 my-4 mx-6 animate__animated" data-animation="animate__fadeInUp" data-delay="300">
+                <img src="https://placehold.co/150x50/f0f0f0/a0a0a0?text=ByteGuard" alt="ByteGuard Logo" class="h-10 my-4 mx-6 animate__animated" data-animation="animate__fadeInUp" data-delay="400">
+                <img src="https://placehold.co/150x50/f0f0f0/a0a0a0?text=InnovaTech" alt="InnovaTech Logo" class="h-10 my-4 mx-6 animate__animated" data-animation="animate__fadeInUp" data-delay="500">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-slate-950 border-t border-slate-800 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-4 animate__animated" data-animation="animate__fadeInUp">
+                    Your Personal Security Toolkit
+                </h2>
+                <p class="text-lg text-gray-300 text-center mx-auto mb-16 animate__animated" data-animation="animate__fadeInUp" data-delay="100">
+                    Our app is packed with features designed to give you clarity and confidence online, all in one simple interface.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Feature 1: AI Chatbot -->
+                <div class="bg-slate-800 p-8 rounded-lg shadow-lg border border-slate-700 transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-900/10 hover:border-slate-600 animate__animated" data-animation="animate__fadeInUp" data-delay="200">
+                    <div class="bg-slate-900 text-purple-400 w-14 h-14 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-3">AI Security Chatbot</h3>
+                    <p class="text-gray-300">
+                        Have a question? Our AI mentor gives you clear, simple answers. Learn about 2FA, phishing, and malware in plain English.
+                    </p>
+                    <a href="chatbot.html" class="font-semibold text-indigo-600 hover:underline dark:text-purple-400 mt-4 inline-block">Start Chatting &rarr;</a>
+                </div>
+                
+                <!-- Feature 2: Breach Check -->
+                <div class="bg-slate-800 p-8 rounded-lg shadow-lg border border-slate-700 transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-900/10 hover:border-slate-600 animate__animated" data-animation="animate__fadeInUp" data-delay="300">
+                    <div class="bg-slate-900 text-purple-400 w-14 h-14 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-3">Data Breach Check</h3>
+                    <p class="text-gray-300">
+                        Find out if your email or phone has been compromised. We'll tell you what to do about it, step-by-step.
+                    </p>
+                </div>
+
+                <!-- Feature 3: Risk Score -->
+                <div class="bg-slate-800 p-8 rounded-lg shadow-lg border border-slate-700 transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-900/10 hover:border-slate-600 animate__animated" data-animation="animate__fadeInUp" data-delay="400">
+                    <div class="bg-slate-900 text-purple-400 w-14 h-14 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10.5 12a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-3">Personal Risk Score</h3>
+                    <p class="text-gray-300">
+                        Get a simple score that shows your current security level. Watch it improve as you learn and secure your accounts.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section id="why-us" class="py-24 bg-slate-900 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 animate__animated" data-animation="animate__fadeInUp">
+                    Why Choose AI Mentor?
+                </h2>
+                <p class="text-lg text-gray-300 mb-16 animate__animated" data-animation="animate__fadeInUp" data-delay="100">
+                    Go beyond simple security tips. Get a personalized plan that adapts to you, helping you build real skills and confidence.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Item 1 -->
+                <div class="bg-slate-800/50 p-8 rounded-lg border border-slate-700 transition-all duration-300 hover:bg-slate-800 animate__animated" data-animation="animate__fadeInUp" data-delay="200">
+                    <h3 class="text-xl font-semibold text-white mb-2">Learn by Doing, Not Just Reading</h3>
+                    <p class="text-gray-300">Our gamified simulations (like the "Phishing Spotter") let you test your skills in a safe environment, so you're prepared for real-world threats.</p>
+                </div>
+                <!-- Item 2 -->
+                <div class="bg-slate-800/50 p-8 rounded-lg border border-slate-700 transition-all duration-300 hover:bg-slate-800 animate__animated" data-animation="animate__fadeInUp" data-delay="300">
+                    <h3 class="text-xl font-semibold text-white mb-2">Truly Personalized Learning</h3>
+                    <p class="text-gray-300">Your Breach Check results directly inform your Personal Learning Path. We don't just tell you *what* to learn; we tell you *why*.</p>
+                </div>
+                <!-- Item 3 -->
+                <div class="bg-slate-800/50 p-8 rounded-lg border border-slate-700 transition-all duration-300 hover:bg-slate-800 animate__animated" data-animation="animate__fadeInUp" data-delay="400">
+                    <h3 class="text-xl font-semibold text-white mb-2">Always Up-to-Date</h3>
+                    <p class="text-gray-300">The threat landscape changes daily. Our AI is continuously updated, so your advice is always based on the latest intelligence.</p>
+                </div>
+                <!-- Item 4 -->
+                <div class="bg-slate-800/50 p-8 rounded-lg border border-slate-700 transition-all duration-300 hover:bg-slate-800 animate__animated" data-animation="animate__fadeInUp" data-delay="500">
+                    <h3 class="text-xl font-semibold text-white mb-2">Clarity & Confidence</h3>
+                    <p class="text-gray-300">We translate complex cybersecurity jargon into simple, actionable steps. Go from feeling overwhelmed to feeling in control.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 bg-slate-950 border-t border-slate-800 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-4 animate__animated" data-animation="animate__fadeInUp">
+                    Flexible Pricing for Everyone
+                </h2>
+                <p class="text-lg text-gray-300 text-center mx-auto mb-12 animate__animated" data-animation="animate__fadeInUp" data-delay="100">
+                    Choose the plan that fits your needs. Get started for free or unlock powerful features with our Pro plan.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                
+                <!-- Plan 1: Free -->
+                <div class="bg-slate-800 p-8 rounded-lg shadow-lg border border-slate-700 flex flex-col animate__animated" data-animation="animate__fadeInUp" data-delay="200">
+                    <h3 class="text-2xl font-semibold text-white mb-4">Free</h3>
+                    <p class="text-gray-400 mb-6">For individuals starting out.</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-extrabold text-white">$0</span>
+                        <span class="text-lg text-gray-400">/ month</span>
+                    </div>
+                    <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>AI Security Chatbot</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Basic Data Breach Check</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Personal Risk Score</li>
+                    </ul>
+                    <a href="signup.html" class="w-full text-center bg-slate-700 text-white px-6 py-3 rounded-md font-medium hover:bg-slate-600 transition-all duration-300">
+                        Sign Up for Free
+                    </a>
+                </div>
+                
+                <!-- Plan 2: Pro (Most Popular) -->
+                <div class="bg-slate-900 p-8 rounded-lg shadow-2xl border-2 border-purple-500 flex flex-col relative ring-2 ring-purple-500/50 animate__animated" data-animation="animate__fadeInUp" data-delay="300">
+                    <div class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2">
+                        <span class="bg-purple-500 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Pro</h3>
+                    <p class="text-gray-400 mb-6">For users who want more power.</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-extrabold text-white">$9</span>
+                        <span class="text-lg text-gray-400">/ month</span>
+                    </div>
+                    <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Everything in Free, plus:</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Unlimited Breach Checks</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Personalized Learning Path</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Browser Extension Companion</li>
+                    </ul>
+                    <a href="signup.html" class="w-full text-center bg-purple-600 text-white px-6 py-3 rounded-md font-medium hover:bg-purple-700 shadow-md hover:shadow-lg transition-all duration-300">
+                        Get Started with Pro
+                    </a>
+                </div>
+
+                <!-- Plan 3: Enterprise -->
+                <div class="bg-slate-800 p-8 rounded-lg shadow-lg border border-slate-700 flex flex-col animate__animated" data-animation="animate__fadeInUp" data-delay="400">
+                    <h3 class="text-2xl font-semibold text-white mb-4">Enterprise</h3>
+                    <p class="text-gray-400 mb-6">For teams and businesses.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold text-white">Contact Us</span>
+                    </div>
+                    <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>All Pro features, plus:</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Team Dashboards</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Centralized Billing</li>
+                        <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Priority Support</li>
+                    </ul>
+                    <a href="#" class="w-full text-center bg-slate-700 text-white px-6 py-3 rounded-md font-medium hover:bg-slate-600 transition-all duration-300">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News Section -->
+    <section id="news" class="py-24 bg-slate-900 border-t border-slate-800 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 animate__animated" data-animation="animate__fadeInUp">
+                    Latest Cybersecurity News
+                </h2>
+                <p class="text-lg text-gray-300 mb-16 animate__animated" data-animation="animate__fadeInUp" data-delay="100">
+                    Stay informed on the latest global data breaches and security threats as they happen.
+                </p>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <ul class="space-y-6">
+                    <!-- News Item 1 -->
+                    <li class="bg-slate-800 p-6 rounded-lg shadow-lg border border-slate-700 flex flex-col md:flex-row md:items-center md:justify-between transition-all duration-300 hover:bg-slate-700/60 animate__animated" data-animation="animate__fadeInUp" data-delay="200">
+                        <div>
+                            <span class="text-sm font-medium text-red-400">Major Breach</span>
+                            <h3 class="text-xl font-semibold text-white mt-1 mb-2 md:mb-0">Global Payments Platform 'PayCore' Reports Data Exposure</h3>
+                        </div>
+                        <div class="mt-4 md:mt-0 md:ml-6 flex-shrink-0">
+                            <a href="#" class="inline-block bg-slate-700 text-white px-5 py-2 rounded-md font-medium hover:bg-purple-600 transition-colors">
+                                Read More
+                            </a>
+                        </div>
+                    </li>
+                    <!-- News Item 2 -->
+                    <li class="bg-slate-800 p-6 rounded-lg shadow-lg border border-slate-700 flex flex-col md:flex-row md:items-center md:justify-between transition-all duration-300 hover:bg-slate-700/60 animate__animated" data-animation="animate__fadeInUp" data-delay="300">
+                        <div>
+                            <span class="text-sm font-medium text-yellow-400">New Vulnerability</span>
+                            <h3 class="text-xl font-semibold text-white mt-1 mb-2 md:mb-0">'LogShell' Vulnerability Discovered in Popular Cloud Servers</h3>
+                        </div>
+                        <div class="mt-4 md:mt-0 md:ml-6 flex-shrink-0">
+                            <a href="#" class="inline-block bg-slate-700 text-white px-5 py-2 rounded-md font-medium hover:bg-purple-600 transition-colors">
+                                Read More
+                            </a>
+                        </div>
+                    </li>
+                    <!-- News Item 3 -->
+                    <li class="bg-slate-800 p-6 rounded-lg shadow-lg border border-slate-700 flex flex-col md:flex-row md:items-center md:justify-between transition-all duration-300 hover:bg-slate-700/60 animate__animated" data-animation="animate__fadeInUp" data-delay="400">
+                        <div>
+                            <span class="text-sm font-medium text-red-400">Major Breach</span>
+                            <h3 class="text-xl font-semibold text-white mt-1 mb-2 md:mb-0">'HealthTrack' Medical App Leaks 2.5 Million Patient Records</h3>
+                        </div>
+                        <div class="mt-4 md:mt-0 md:ml-6 flex-shrink-0">
+                            <a href="#" class="inline-block bg-slate-700 text-white px-5 py-2 rounded-md font-medium hover:bg-purple-600 transition-colors">
+                                Read More
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-slate-950 border-t border-slate-800 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 animate__animated" data-animation="animate__fadeInUp">
+                    Frequently Asked Questions
+                </h2>
+                <p class="text-lg text-gray-300 mb-16 animate__animated" data-animation="animate__fadeInUp" data-delay="100">
+                    Have questions? We have answers.
+                </p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-6">
+                <!-- FAQ 1 -->
+                <div x-data="{ open: false }" class="bg-slate-800 p-6 rounded-lg border border-slate-700 animate__animated" data-animation="animate__fadeInUp" data-delay="200">
+                    <button @click="open = !open" class="w-full flex justify-between items-center text-left text-xl font-semibold text-white">
+                        <span>How does the AI know what to teach me?</span>
+                        <svg class="w-6 h-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    <div x-show="open" x-collapse x-cloak class="mt-4 text-gray-300">
+                        <p>Our AI uses your Breach Check results to create a personalized learning path. If you've been in a breach that exposed passwords, it will prioritize teaching you about password managers and 2FA. It adapts to your specific risks.</p>
+                    </div>
+                </div>
+                <!-- FAQ 2 -->
+                <div x-data="{ open: false }" class="bg-slate-800 p-6 rounded-lg border border-slate-700 animate__animated" data-animation="animate__fadeInUp" data-delay="300">
+                    <button @click="open = !open" class="w-full flex justify-between items-center text-left text-xl font-semibold text-white">
+                        <span>Is the Breach Check safe and private?</span>
+                        <svg class="w-6 h-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    <div x-show="open" x-collapse x-cloak class="mt-4 text-gray-300">
+                        <p>Absolutely. We use a method called "k-Anonymity" (similar to Have I Been Pwned) to check for breaches. Your full email address is never sent to any external service. We only send the first few characters of a hashed (scrambled) version, preserving your privacy.</p>
+                    </div>
+                </div>
+                <!-- FAQ 3 -->
+                <div x-data="{ open: false }" class="bg-slate-800 p-6 rounded-lg border border-slate-700 animate__animated" data-animation="animate__fadeInUp" data-delay="400">
+                    <button @click="open = !open" class="w-full flex justify-between items-center text-left text-xl font-semibold text-white">
+                        <span>Why do I need this if I have antivirus software?</span>
+                        <svg class="w-6 h-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    <div x-show="open" x-collapse x-cloak class="mt-4 text-gray-300">
+                        <p>Antivirus software is great for protecting your *device* from malware. AI Mentor protects *you*—the human. Most security incidents today, like phishing, happen because a person was tricked, not because a machine failed. We train you to spot those tricks before they become a problem.</p>
+                    </div>
+                </div>
+                <!-- FAQ 4 -->
+                <div x-data="{ open: false }" class="bg-slate-800 p-6 rounded-lg border border-slate-700 animate__animated" data-animation="animate__fadeInUp" data-delay="500">
+                    <button @click="open = !open" class="w-full flex justify-between items-center text-left text-xl font-semibold text-white">
+                        <span>What is a "Browser Extension Companion"?</span>
+                        <svg class="w-6 h-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    <div x-show="open" x-collapse x-cloak class="mt-4 text-gray-300">
+                        <p>It's a small add-on for your browser (like Chrome or Firefox) that's part of our Pro plan. It works in the background and will warn you in real-time if you visit a website that has been part of a recent data breach, prompting you to use a unique password.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section id="cta" class="py-24 bg-gradient-to-r from-purple-700 to-violet-800 fade-in-section">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 animate__animated" data-animation="animate__fadeInUp">
+                Ready to take control of your digital safety?
+            </h2>
+            <p class="text-lg text-purple-100 max-w-xl mx-auto mb-10 animate__animated" data-animation="animate__fadeInUp" data-delay="100">
+                Join today and start your journey to becoming a cybersecurity expert. It's free to get started.
+            </p>
+            <a href="signup.html" class="inline-block bg-white text-gray-900 px-8 py-4 rounded-md font-semibold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate__animated" data-animation="animate__pulse" data-delay="200">
+                Sign Up Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-gray-400 py-16 fade-in-section">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                <!-- Column 1: Logo & Social -->
+                <div class="col-span-2 lg:col-span-2 animate__animated" data-animation="animate__fadeInUp" data-delay="100">
+                    <a href="index.html" class="flex items-center space-x-3 mb-4">
+                        <svg class="h-8 w-8 text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.623 0-1.314-.21-2.57-.598-3.75" />
+                        </svg>
+                        <span class="text-2xl font-bold text-white">AI Mentor</span>
+                    </a>
+                    <p class="text-sm max-w-xs mb-4">Your personal AI-powered guide to online safety and security.</p>
+                    <div class="flex space-x-5">
+                        <!-- Social Icons -->
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.67.88-.53 1.56-1.37 1.88-2.38-.83.49-1.75.85-2.72 1.04C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.27 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.48.75 2.79 1.9 3.55-.7-.02-1.36-.21-1.94-.53v.05c0 2.07 1.47 3.8 3.42 4.19-.36.1-.74.15-1.13.15-.27 0-.54-.03-.8-.08.54 1.7 2.1 2.94 3.96 2.97-1.46 1.15-3.3 1.83-5.3 1.83-.34 0-.68-.02-1.02-.06C2.3 18.28 4.76 19 7.5 19c6.9 0 10.68-5.7 10.68-10.68 0-.16 0-.32-.01-.48.73-.53 1.36-1.19 1.87-1.94z"/></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.51 0 10-4.48 10-10S17.51 2 12 2zm-1 15.5v-5.5h-3v-3h3V6.5c0-3.07 1.89-4.75 4.61-4.75.9 0 1.67.07 1.89.1v2.53h-1.49c-1.49 0-1.79.71-1.79 1.75V9h3.33l-.44 3H15.2v5.5H11z" clip-rule="evenodd"/></svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H8v-5h3v5zm-1.5-6.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm6.5 6.5h-3v-5c0-.99-.02-2.25-1.37-2.25-1.37 0-1.58 1.07-1.58 2.18v5h-3v-5h2.88v1.34h.04c.42-.79 1.44-1.62 2.84-1.62 3.03 0 3.59 1.99 3.59 4.58v5z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 2: Product -->
+                <div class="col-span-1 animate__animated" data-animation="animate__fadeInUp" data-delay="200">
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Product</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#features" class="hover:text-white">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-white">Pricing</a></li>
+                        <li><a href="#why-us" class="hover:text-white">Why Us</a></li>
+                        <li><a href="#testimonials" class="hover:text-white">Testimonials</a></li>
+                    </ul>
+                </div>
+                <!-- Column 3: Company -->
+                <div class="col-span-1 animate__animated" data-animation="animate__fadeInUp" data-delay="300">
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#news" class="hover:text-white">News</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- Column 4: Legal -->
+                <div class="col-span-1 animate__animated" data-animation="animate__fadeInUp" data-delay="400">
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Legal</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-slate-700 my-8">
+            <p class="text-sm text-center animate__animated" data-animation="animate__fadeInUp" data-delay="500">&copy; 2025 AI Cybersecurity Mentor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const authLinksWrapper = document.getElementById('auth-links');
+            const authUserWrapper = document.getElementById('auth-user');
+            const accountLink = document.getElementById('account-link');
+            const mobileAccountLink = document.getElementById('mobile-account-link');
+            const authLinks = document.querySelectorAll('[data-auth-link]');
+
+            const clearAuth = () => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userName');
+            };
+
+            const setLoggedOutState = () => {
+                if (authLinksWrapper) {
+                    authLinksWrapper.hidden = false;
+                    authLinksWrapper.classList.remove('hidden');
+                }
+                if (authUserWrapper) {
+                    authUserWrapper.hidden = true;
+                    authUserWrapper.classList.add('hidden');
+                }
+                if (accountLink) {
+                    accountLink.classList.add('hidden');
+                }
+                authLinks.forEach(link => {
+                    link.classList.remove('hidden');
+                });
+                if (mobileAccountLink) {
+                    mobileAccountLink.classList.add('hidden');
+                }
+            };
+
+            const setLoggedInState = (name) => {
+                if (authLinksWrapper) {
+                    authLinksWrapper.hidden = true;
+                }
+                if (authUserWrapper) {
+                    authUserWrapper.hidden = false;
+                    authUserWrapper.classList.remove('hidden');
+                }
+                authLinks.forEach(link => {
+                    link.classList.add('hidden');
+                });
+                if (accountLink) {
+                    accountLink.classList.remove('hidden');
+                }
+                if (mobileAccountLink) {
+                    mobileAccountLink.classList.remove('hidden');
+                }
+            };
+
+            const token = localStorage.getItem('authToken');
+            const cachedName = localStorage.getItem('userName');
+
+            if (!token) {
+                setLoggedOutState();
+            } else {
+                fetch('http://localhost:4000/api/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                    .then(async (response) => {
+                        if (!response.ok) {
+                            throw new Error('Session expired.');
+                        }
+                        const data = await response.json();
+                        const name = data?.user?.fullName || cachedName || 'User';
+                        localStorage.setItem('userName', name);
+                        setLoggedInState(name);
+                    })
+                    .catch(() => {
+                        clearAuth();
+                        setLoggedOutState();
+                    });
+            }
+        });
+    </script>
+
+    <!-- Animation and 3D script -->
+    <script>
+        // Scroll-triggered animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.fade-in-section');
+
+            const hideSectionElements = (section) => {
+                section.querySelectorAll('.animate__animated').forEach(el => {
+                    el.style.visibility = 'hidden';
+                });
+                delete section.dataset.animationPlayed;
+            };
+
+            const playSectionAnimation = (section) => {
+                if (section.dataset.animationPlayed === 'true') {
+                    return;
+                }
+
+                section.dataset.animationPlayed = 'true';
+
+                const elements = section.querySelectorAll('.animate__animated');
+                elements.forEach((el, index) => {
+                    const delayAttr = el.dataset.delay;
+                    const delayMs = delayAttr !== undefined ? Number(delayAttr) : index * 100;
+                    const animationClass = el.dataset.animation || 'animate__fadeInUp';
+
+                    setTimeout(() => {
+                        el.style.visibility = 'visible';
+                        el.classList.add(animationClass);
+                    }, delayMs);
+                });
+            };
+
+            const sectionIsInView = (section) => {
+                const rect = section.getBoundingClientRect();
+                return rect.top < window.innerHeight && rect.bottom > 0;
+            };
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            playSectionAnimation(entry.target);
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.15
+                });
+
+                sections.forEach(section => {
+                    hideSectionElements(section);
+                    observer.observe(section);
+
+                    if (sectionIsInView(section)) {
+                        playSectionAnimation(section);
+                        observer.unobserve(section);
+                    }
+                });
+            } else {
+                sections.forEach(section => {
+                    section.querySelectorAll('.animate__animated').forEach(el => {
+                        el.style.visibility = 'visible';
+                        el.classList.add(el.dataset.animation || 'animate__fadeInUp');
+                    });
+                });
+            }
+        });
+
+        // Three.js 3D Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('3d-container');
+            if (!container) return;
+
+            let mouseX = 0, mouseY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            // Scene, Camera, Renderer
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xa855f7, 1.5);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+
+            // Main 3D Object (TorusKnot)
+            const geometry = new THREE.TorusKnotGeometry(1.5, 0.4, 100, 16);
+            const material = new THREE.MeshStandardMaterial({
+                color: 0x8b5cf6,
+                metalness: 0.8,
+                roughness: 0.2,
+            });
+            const torusKnot = new THREE.Mesh(geometry, material);
+            scene.add(torusKnot);
+
+            // Wireframe Layer
+            const wireframeMaterial = new THREE.MeshBasicMaterial({ color: 0xbe8cfd, wireframe: true, transparent: true, opacity: 0.1 });
+            const wireframe = new THREE.Mesh(geometry, wireframeMaterial);
+            wireframe.scale.set(1.001, 1.001, 1.001);
+            scene.add(wireframe);
+
+            // Particle System
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCnt = 5000;
+            const posArray = new Float32Array(particlesCnt * 3);
+            for(let i = 0; i < particlesCnt * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 10;
+            }
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.005,
+                color: 0xbe8cfd,
+            });
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            // Camera Position
+            camera.position.z = 5;
+
+            // Event Listeners
+            document.addEventListener('mousemove', onDocumentMouseMove);
+
+            // Animation Loop
+            const clock = new THREE.Clock();
+            function animate() {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+
+                // Animate objects
+                torusKnot.rotation.y = .3 * elapsedTime;
+                wireframe.rotation.y = .3 * elapsedTime;
+                particlesMesh.rotation.y = -.1 * elapsedTime;
+
+                // Mouse interaction
+                camera.position.x += (mouseX - camera.position.x) * .05;
+                camera.position.y += (-mouseY - camera.position.y) * .05;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Mouse Move Function
+            function onDocumentMouseMove(event) {
+                mouseX = (event.clientX - windowHalfX) / 100;
+                mouseY = (event.clientY - windowHalfY) / 100;
+            }
+
+            // Handle Window Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        });
+    </script>
+</body>
+</html>
+
+

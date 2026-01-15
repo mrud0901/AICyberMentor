@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^4.1.16"
+  },
+  "name": "aicybermentor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "node_modules/.bin/tailwindcss -i ./frontend/input.css -o ./frontend/output.css",
+    "watch:css": "node_modules/.bin/tailwindcss -i ./frontend/input.css -o ./frontend/output.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
