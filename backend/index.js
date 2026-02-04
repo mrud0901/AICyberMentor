@@ -3,17 +3,31 @@ const cors = require("cors");
 
 const app = express();
 
-// Enable CORS for frontend
+/* ======================
+   ENABLE CORS (CRITICAL)
+====================== */
 app.use(cors({
-  origin: "*"
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// Handle preflight requests
+app.options("*", cors());
 
 app.use(express.json());
 
+/* ======================
+   TEST ROUTE
+====================== */
 app.get("/", (req, res) => {
   res.json({ message: "API is running 🚀" });
 });
 
-// your other routes below (auth, chat, etc.)
+/* ======================
+   AUTH ROUTES
+====================== */
+const authRoutes = require("./routes/auth");
+app.use("/api/auth", authRoutes);
 
 module.exports = app;
