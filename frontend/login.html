@@ -170,15 +170,12 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({ email, password })
-});
-
-
+                })
                 .then(async response => {
                     const data = await response.json();
                     if (!response.ok) {
                         throw new Error(data?.message || 'Unable to log in. Please try again.');
                     }
-
                     localStorage.setItem('authToken', data.token);
                     localStorage.setItem('userName', data.user.fullName);
                     window.location.href = 'dashboard.html';
@@ -190,6 +187,8 @@
                     submitButton.disabled = false;
                     submitButton.classList.remove('opacity-70');
                 });
+
+             
             });
         });
     </script>
